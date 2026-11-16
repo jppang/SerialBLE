@@ -56,7 +56,6 @@ void initSerialBLE(String deviceName) {
                       CHARACTERISTIC_UUID_TX,
                       BLECharacteristic::PROPERTY_NOTIFY
                     );
-  pCharacteristicTX->addDescriptor(new BLE2902());
 
   // Create RX characteristic
   BLECharacteristic *pCharacteristicRX = pService->createCharacteristic(
