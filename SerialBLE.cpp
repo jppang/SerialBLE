@@ -41,7 +41,8 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 };
 
 void initSerialBLE(String deviceName) {
-  Serial.println("Starting BLE UART...");
+  Serial.print("BLE Name: ");
+  Serial.println(deviceName);  
 
   // Initialize BLE
   BLEDevice::init(deviceName.c_str()); // BT's name
@@ -67,7 +68,6 @@ void initSerialBLE(String deviceName) {
   // Start Services
   pService->start();
   pServer->getAdvertising()->start();
-  Serial.println("Waiting for a client connection...");
 }
 
 void serialBLETX(String message) {
