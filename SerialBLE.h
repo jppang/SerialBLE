@@ -14,11 +14,8 @@ class SerialBLE{
         void write(byte* message, size_t count);
         String read();
 
-    private:
-        BLECharacteristic *pCharacteristicTX;
-        bool deviceConnected;
-        bool messageReceived;
-        String rxMessage;
+    protected:
+        
 };
 
 #endif
