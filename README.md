@@ -1,9 +1,9 @@
 
 # SerialBLE
 
-A utility library to create the basic connectivity function of Bluetooth LE by using ESP32 variant MCUs.
+An utility library to create the basic serial connectivity function of Bluetooth LE by using ESP32 variant MCUs.
 
-Only three main functions are available:
-+  Initialization the BLE
-+  TX: transmits message
-+  RX: receives message
+Only three functions are available:
++  setup(): Initialization the BLE
++  write(): transmits message
++  read(): receives message
