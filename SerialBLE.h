@@ -1,3 +1,4 @@
+
 #ifndef SERIAL_BLE_H
 #define SERIAL_BLE_H 
 #include <Arduino.h>
@@ -6,8 +7,19 @@
 #include <BLEServer.h>
 #include "config.h"
 
-void initSerialBLE(String deviceName);
-void serialBLETX(String message);
-void serialBLETX(byte* message, size_t count);
-String serialBLERX();
+class SerialBLE{
+    public:
+        SerialBLE();
+        void setup(String deviceName);
+        void write(String message);
+        void write(byte* message, size_t count);
+        String read();
+
+    private:
+        BLECharacteristic *pCharacteristicTX;
+        bool deviceConnected;
+        bool messageReceived;
+        String rxMessage;
+};
+
 #endif
