@@ -43,6 +43,10 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     	}
     	messageReceived = true;
 	}
+
+	void onRead(BLECharacteristic* pCharacteristic) override {
+        Serial.println("Client requested a BLE Read.");
+    }
 };
 
 SerialBLE::SerialBLE() {
