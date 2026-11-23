@@ -70,14 +70,15 @@ void SerialBLE::setup(String deviceName) {
 	// Create TX characteristic
 	pCharacteristicTX = pService->createCharacteristic(
                       CHARACTERISTIC_UUID_TX,
-                      BLECharacteristic::PROPERTY_NOTIFY
+                      BLECharacteristic::PROPERTY_NOTIFY |
+					  BLECharacteristic::PROPERTY_WRITE
                     );
 	pCharacteristicTX->addDescriptor(new BLE2902());
 
 	// Create RX characteristic
 	BLECharacteristic *pCharacteristicRX = pService->createCharacteristic(
                       CHARACTERISTIC_UUID_RX,
-                      BLECharacteristic::PROPERTY_WRITE
+                      BLECharacteristic::PROPERTY_READ
                     );
 	pCharacteristicRX->setCallbacks(new MyCallbacks());
 	pCharacteristicTX->addDescriptor(new BLE2902());
