@@ -76,7 +76,7 @@ void SerialBLE::setup(String deviceName) {
                       BLECharacteristic::PROPERTY_WRITE
                     );
 	pCharacteristicRX->setCallbacks(new MyCallbacks());
-
+	pCharacteristicTX->addDescriptor(new BLE2902());
 	// Start Services
 	pService->start();
 	pServer->getAdvertising()->start();
