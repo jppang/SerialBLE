@@ -1,8 +1,5 @@
 
-#include <BLEDevice.h>
-#include <BLEUtils.h>
-#include <BLEServer.h>
-#include <BLE2902.h>
+#include <NimBLEDevice.h>
 #include "SerialBLE.h"
 /*
 // BLE Service UUID
@@ -13,18 +10,19 @@
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
-BLECharacteristic *pCharacteristic;
+NimBLECharacteristic *pCharacteristic = nullptr;
+NimBLEServer *pserver = nullptr;
 bool deviceConnected;
 bool messageReceived;
 String rxMessage;
 
 // BLE Callback functions
-class MyServerCallbacks: public BLEServerCallbacks {
-	void onConnect(BLEServer* pServer) {
+class MyServerCallbacks: public NimBLEServerCallbacks {
+	void onConnect(NimBLEServer* pServer) {
     	deviceConnected = true;
     	Serial.println("Device Connected");
     }
-    void onDisconnect(BLEServer* pServer) {
+    void onDisconnect(NimBLEServer* pServer) {
     	deviceConnected = false;
     	Serial.println("Device Disconnected");
     	// Advertising
@@ -32,9 +30,9 @@ class MyServerCallbacks: public BLEServerCallbacks {
 	}
 };
 
-// RX Callback function
-class MyCallbacks: public BLECharacteristicCallbacks {
-    void onWrite(BLECharacteristic *pCharacteristic) {
+// Callback functions
+class MyCallbacks: public NimBLECharacteristicCallbacks {
+    void onWrite(NimBLECharacteristic *pCharacteristic) {
     	rxMessage = pCharacteristic->getValue();
     	rxMessage.trim();
     	if (rxMessage.length() > 0) {
@@ -47,7 +45,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     	messageReceived = true;
 	}
 
-	void onRead(BLECharacteristic* pCharacteristic) override {
+	void onRead(NimBLECharacteristic* pCharacteristic) override {
         Serial.println("Client requested a BLE Read.");
     }
 };
@@ -59,34 +57,30 @@ SerialBLE::SerialBLE() {
 }
 
 void SerialBLE::setup(String deviceName) {
-	Serial.print("BLE Name: ");
-	Serial.println(deviceName);  
+	Serial.printin("BLE Name: " + deviceName);  
 
 	// Initialize BLE
-	BLEDevice::init(deviceName.c_str()); // BLE's name
-	BLEServer *pServer = BLEDevice::createServer();
+	NimBLEDevice::init(deviceName); // BLE's name
+	pServer = NimBLEDevice::createServer();
 	pServer->setCallbacks(new MyServerCallbacks());
 
 	// Create BLE services
-	BLEService *pService = pServer->createService(SERVICE_UUID);
+	NimBLEService *pService = pServer->createService(SERVICE_UUID);
 
 	pCharacteristic = pService->createCharacteristic(
         CHARACTERISTIC_UUID,
-        BLECharacteristic::PROPERTY_READ   |
-        BLECharacteristic::PROPERTY_WRITE  |
-        BLECharacteristic::PROPERTY_NOTIFY
+        NimBLECharacteristic::PROPERTY_READ   |
+        NimBLECharacteristic::PROPERTY_WRITE  |
+        NimBLECharacteristic::PROPERTY_NOTIFY
     );
 
-    pCharacteristic->addDescriptor(new BLE2902());
 	pCharacteristic->setCallbacks(new MyCallbacks());
 
 	// Start Services
 	pService->start();
-    BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
+    NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
     pAdvertising->addServiceUUID(SERVICE_UUID);
-    pAdvertising->setScanResponse(true);
-    pAdvertising->setMinPreferred(0x06);  // Helps with iPhone connection issues
-    BLEDevice::startAdvertising();
+	pAdvertising->start();
 }
 
 bool SerialBLE::connected() {
