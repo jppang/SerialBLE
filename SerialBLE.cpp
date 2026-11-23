@@ -2,6 +2,7 @@
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
+#include <BLE2902.h>
 #include "SerialBLE.h"
 
 // BLE Service UUID
@@ -68,7 +69,7 @@ void SerialBLE::setup(String deviceName) {
                       BLECharacteristic::PROPERTY_NOTIFY
                     );
 	pCharacteristicTX->addDescriptor(new BLE2902());
-	
+
 	// Create RX characteristic
 	BLECharacteristic *pCharacteristicRX = pService->createCharacteristic(
                       CHARACTERISTIC_UUID_RX,
