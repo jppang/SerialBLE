@@ -69,15 +69,15 @@ void SerialBLE::setup(String deviceName) {
 
 	pCharacteristic = pService->createCharacteristic(
         CHARACTERISTIC_UUID,
-        NIMBLE_PROPERTY::PROPERTY_READ   |
-        NIMBLE_PROPERTY::PROPERTY_WRITE  |
-        NIMBLE_PROPERTY::PROPERTY_NOTIFY
+        NIMBLE_PROPERTY::READ   |
+        NIMBLE_PROPERTY::WRITE  |
+        NIMBLE_PROPERTY::NOTIFY
     );
 
 	pCharacteristic->setCallbacks(new MyCallbacks());
 
 	// Start Services
-	pService->start();
+	//pService->start();
     NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
     pAdvertising->addServiceUUID(SERVICE_UUID);
 	pAdvertising->start();
