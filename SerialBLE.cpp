@@ -11,7 +11,7 @@
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
 NimBLECharacteristic *pCharacteristic = nullptr;
-NimBLEServer *pserver = nullptr;
+NimBLEServer *pServer = nullptr;
 bool deviceConnected;
 bool messageReceived;
 String rxMessage;
