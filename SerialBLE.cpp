@@ -90,16 +90,16 @@ bool SerialBLE::connected() {
 
 void SerialBLE::write(String message) {
 	if (deviceConnected) {
-    	pCharacteristicTX->setValue(message.c_str());
-    	pCharacteristicTX->notify();
+    	pCharacteristic->setValue(message.c_str());
+    	pCharacteristic->notify();
     	Serial.println("Sent: " + message);
     }
 }
 
 void SerialBLE::write(byte* message, size_t count) {
 	if (deviceConnected) {
-    	pCharacteristicTX->setValue(message, count);
-		pCharacteristicTX->notify();
+    	pCharacteristic->setValue(message, count);
+		pCharacteristic->notify();
     }
 }
 
