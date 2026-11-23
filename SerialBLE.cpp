@@ -86,6 +86,10 @@ void SerialBLE::setup(String deviceName) {
 	pServer->getAdvertising()->start();
 }
 
+bool SerialBLE::connected() {
+	return deviceConnected;
+}
+
 void SerialBLE::write(String message) {
 	if (deviceConnected) {
     	pCharacteristicTX->setValue(message.c_str());

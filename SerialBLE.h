@@ -10,6 +10,7 @@ class SerialBLE{
         void setup(String deviceName);
         void write(String message);
         void write(byte* message, size_t count);
+        bool connected();
         String read();
 
     protected:
