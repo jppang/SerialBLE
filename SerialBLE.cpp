@@ -32,7 +32,7 @@ class MyServerCallbacks: public NimBLEServerCallbacks {
 
 // Callback functions
 class MyCallbacks: public NimBLECharacteristicCallbacks {
-    void onWrite(NimBLECharacteristic *pCharacteristic) {
+    void onWrite(NimBLECharacteristic* pCharacteristic) {
     	rxMessage = pCharacteristic->getValue();
     	rxMessage.trim();
     	if (rxMessage.length() > 0) {
@@ -45,7 +45,7 @@ class MyCallbacks: public NimBLECharacteristicCallbacks {
     	messageReceived = true;
 	}
 
-	void onRead(NimBLECharacteristic* pCharacteristic) override {
+	void onRead(NimBLECharacteristic* pCharacteristic) {
         Serial.println("Client requested a BLE Read.");
     }
 };
@@ -57,10 +57,10 @@ SerialBLE::SerialBLE() {
 }
 
 void SerialBLE::setup(String deviceName) {
-	Serial.printin("BLE Name: " + deviceName);  
+	Serial.println("BLE Name: " + deviceName);  
 
 	// Initialize BLE
-	NimBLEDevice::init(deviceName); // BLE's name
+	NimBLEDevice::init(deviceName.c_str()); // BLE's name
 	pServer = NimBLEDevice::createServer();
 	pServer->setCallbacks(new MyServerCallbacks());
 
@@ -69,9 +69,9 @@ void SerialBLE::setup(String deviceName) {
 
 	pCharacteristic = pService->createCharacteristic(
         CHARACTERISTIC_UUID,
-        NimBLECharacteristic::PROPERTY_READ   |
-        NimBLECharacteristic::PROPERTY_WRITE  |
-        NimBLECharacteristic::PROPERTY_NOTIFY
+        NIMBLE_PROPERTY::PROPERTY_READ   |
+        NIMBLE_PROPERTY::PROPERTY_WRITE  |
+        NIMBLE_PROPERTY::PROPERTY_NOTIFY
     );
 
 	pCharacteristic->setCallbacks(new MyCallbacks());
