@@ -81,7 +81,11 @@ void SerialBLE::setup(String deviceName) {
 
 	// Start Services
 	pService->start();
-	pServer->getAdvertising()->start();
+    BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
+    pAdvertising->addServiceUUID(SERVICE_UUID);
+    pAdvertising->setScanResponse(true);
+    pAdvertising->setMinPreferred(0x06);  // Helps with iPhone connection issues
+    BLEDevice::startAdvertising();
 }
 
 bool SerialBLE::connected() {
